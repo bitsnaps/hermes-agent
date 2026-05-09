@@ -6,7 +6,7 @@ FROM debian:13.4
 ENV PYTHONUNBUFFERED=1
 
 # Store Playwright browsers outside the volume mount so the build-time
-# install survives the /opt/data volume overlay at runtime.
+# install survives the /data volume overlay at runtime.
 ENV PLAYWRIGHT_BROWSERS_PATH=/opt/hermes/.playwright
 
 # Install system dependencies in one layer, clear APT cache
@@ -18,7 +18,7 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/*
 
 # Non-root user for runtime; UID can be overridden via HERMES_UID at runtime
-RUN useradd -u 10000 -m -d /opt/data hermes
+RUN useradd -u 10000 -m -d /data hermes
 
 COPY --chmod=0755 --from=gosu_source /gosu /usr/local/bin/
 COPY --chmod=0755 --from=uv_source /usr/local/bin/uv /usr/local/bin/uvx /usr/local/bin/
@@ -107,7 +107,7 @@ RUN uv pip install --no-cache-dir --no-deps -e "."
 
 # ---------- Runtime ----------
 ENV HERMES_WEB_DIST=/opt/hermes/hermes_cli/web_dist
-ENV HERMES_HOME=/opt/data
-ENV PATH="/opt/data/.local/bin:${PATH}"
-VOLUME [ "/opt/data" ]
+ENV HERMES_HOME=/data
+ENV PATH="/data/.local/bin:${PATH}"
+VOLUME [ "/data" ]
 ENTRYPOINT [ "/usr/bin/tini", "-g", "--", "/opt/hermes/docker/entrypoint.sh" ]
