@@ -109,5 +109,8 @@ RUN uv pip install --no-cache-dir --no-deps -e "."
 ENV HERMES_WEB_DIST=/opt/hermes/hermes_cli/web_dist
 ENV HERMES_HOME=/data
 ENV PATH="/data/.local/bin:${PATH}"
-VOLUME [ "/data" ]
+
+# disalbed for railway deploy
+#VOLUME [ "/data" ]
+
 ENTRYPOINT [ "/usr/bin/tini", "-g", "--", "/opt/hermes/docker/entrypoint.sh" ]
