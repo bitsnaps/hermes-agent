@@ -113,4 +113,5 @@ ENV PATH="/data/.local/bin:${PATH}"
 # disalbed for railway deploy
 #VOLUME [ "/data" ]
 
-ENTRYPOINT [ "/usr/bin/tini", "-g", "--", "/opt/hermes/docker/entrypoint.sh", "dashboard" ]
+#ENTRYPOINT [ "/usr/bin/tini", "-g", "--", "/opt/hermes/docker/entrypoint.sh", "dashboard" ]
+ENTRYPOINT [ "/usr/bin/tini", "-g", "--", "/bin/sh", "-c", "exec /opt/hermes/docker/entrypoint.sh dashboard --host 0.0.0.0 --port "$PORT" --no-open --insecure" ]
